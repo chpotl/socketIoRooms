@@ -8,7 +8,13 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 io.on('connection', (socket) => {
-  console.log(`new webSocketConnection`);
+  socket.emit('message', 'welcome to chat');
+
+  socket.broadcast.emit('message', 'A user has joind chat');
+
+  socket.on('disconnect', () => {
+    io.emit('message', 'A user has left chat');
+  });
 });
 const PORT = 3000 || process.env.PORT;
 
